@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminLoginBlockComponent implements OnInit {
 
+  serverError = '';
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onLogin(value) {
+    console.log('OnLogin', value);
+    this.serverError += 'F';
+  }
 }
