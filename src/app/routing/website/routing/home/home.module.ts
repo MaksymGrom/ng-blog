@@ -8,7 +8,6 @@ import {MatSliderModule} from '@angular/material/slider';
   declarations: [HomePageComponent],
   imports: [
     CommonModule,
-    MatSliderModule,
     RouterModule.forChild([
       {
         path: '',
