@@ -11,13 +11,13 @@
 
   <mat-form-field class="login-form__input-control">
     <mat-label>Пароль</mat-label>
-    <input matInput formControlName="password">
+    <input matInput type="password" formControlName="password">
     <mat-error *ngIf="formGroup.hasError('required', 'password')">Это поле обязательно</mat-error>
   </mat-form-field>
 
   <div class="login-form__input-control">
     <button mat-raised-button color="primary"
-            [disabled]="formGroup.invalid || !!formError">Войти</button>
+            [disabled]="disabled || formGroup.invalid || !!formError">Войти</button>
     <mat-error *ngIf="formError">{{formError}}</mat-error>
   </div>
 </form>
