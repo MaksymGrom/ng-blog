@@ -1,1 +1,4 @@
-<app-admin-login-form-ui></app-admin-login-form-ui>
+<app-admin-login-form-ui
+  [formError]="serverError"
+  (login)="onLogin($event)"
+></app-admin-login-form-ui>
