@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {login, loginFailed, loginSuccess} from './admin-auth.actions';
-import {catchError, delay, delayWhen, filter, first, map, switchMap} from 'rxjs/operators';
+import {extractLoginData, initAdminAuth, login, loginFailed, loginSuccess, logoutSuccess} from './admin-auth.actions';
+import {catchError, filter, first, map, switchMap, tap} from 'rxjs/operators';
 import {AdminAuthService} from '../services/admin-auth.service';
-import {of, timer} from 'rxjs';
+import {fromEvent, of, timer} from 'rxjs';
 import {AuthData} from './admin-auth.reducer';
 import {select, Store} from '@ngrx/store';
 import {isAuth} from './admin-auth.selectors';
@@ -17,7 +17,7 @@ export class AdminAuthEffects {
       login: action.login,
       password: action.password
     }).pipe(
-      map((loginSuccessData: AuthData) => loginSuccess(loginSuccessData)),
+      map(authData => loginSuccess({ authData })),
       catchError(
         error => of(loginFailed({
           serverError: error.message
@@ -28,9 +28,9 @@ export class AdminAuthEffects {
 
   refresh$ = createEffect(() => this.actions$.pipe(
     ofType(loginSuccess),
-    delayWhen(
-      (action: AuthData) => timer(
-        action.exp * 1000 - 60 * 1000 - Date.now()
+    switchMap(
+      ({ authData }) => timer(
+        authData.exp * 1000 - 60 * 1000 - Date.now()
       )
     ),
     switchMap(() => this.store$.pipe(
@@ -38,9 +38,40 @@ export class AdminAuthEffects {
       first(),
       filter(isAdminAuth => isAdminAuth)
     )),
-    switchMap(() => this.adminAuthService.refresh().pipe(
-      map((loginSuccessData: AuthData) => loginSuccess(loginSuccessData))
-    ))
+    switchMap(() => this.adminAuthService.refresh()),
+    map(authData => loginSuccess({ authData }))
+  ));
+
+  saveAuthDataToLocalStorage$ = createEffect(() => this.actions$.pipe(
+    ofType(loginSuccess),
+    tap(({ authData }) => {
+
+      localStorage.setItem('authData', JSON.stringify(authData));
+    })
+  ), { dispatch: false });
+
+  extractLoginData$ = createEffect(() => this.actions$.pipe(
+    ofType(initAdminAuth, extractLoginData),
+    map(() => {
+      const authDataString = localStorage.getItem('authData');
+      if (!authDataString) {
+        return logoutSuccess();
+      }
+
+      const authData: AuthData = JSON.parse(authDataString);
+
+      if ((authData.exp * 1000 - 10 * 1000 - Date.now()) < 0) {
+        return logoutSuccess();
+      }
+
+      return loginSuccess({ authData });
+    })
+  ));
+
+  listenStorageEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(initAdminAuth),
+    switchMap(() => fromEvent(window, 'storage')),
+    map(() => extractLoginData())
   ));
 
   constructor(
