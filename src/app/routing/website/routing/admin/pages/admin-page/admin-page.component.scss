@@ -1,0 +1,26 @@
+.grid-container {
+  display: grid;
+  min-height: 100vh;
+  grid-template-areas:
+    "header header"
+    "nav main"
+    "footer footer";
+  grid-template-columns: 150px 1fr;
+  grid-template-rows: 64px 1fr 30px;
+}
+
+.header {
+  grid-area: header;
+}
+
+.nav {
+  grid-area: nav;
+}
+
+.main {
+  grid-area: main;
+}
+
+.footer {
+  grid-area: footer;
+}
