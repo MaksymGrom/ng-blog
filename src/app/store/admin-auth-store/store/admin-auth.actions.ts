@@ -20,6 +20,10 @@ export const initAdminAuth = createAction(
   '[Admin Auth] init admin auth'
 );
 
+export const logout = createAction(
+  '[Admin Auth] logout'
+);
+
 export const logoutSuccess = createAction(
   '[Admin Auth] logout success'
 );
