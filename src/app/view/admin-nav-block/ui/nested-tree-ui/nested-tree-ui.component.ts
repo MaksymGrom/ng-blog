@@ -1,59 +1,25 @@
 import {NestedTreeControl} from '@angular/cdk/tree';
-import {Component} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {MatTreeNestedDataSource} from '@angular/material/tree';
+import {NestedTreeNode} from '../../models/nested-tree-node';
 
-/**
- * Food data with nested structure.
- * Each node has a name and an optional list of children.
- */
-interface FoodNode {
-  name: string;
-  children?: FoodNode[];
-}
-
-const TREE_DATA: FoodNode[] = [
-  {
-    name: 'Fruit',
-    children: [
-      {name: 'Apple'},
-      {name: 'Banana'},
-      {name: 'Fruit loops'},
-    ]
-  }, {
-    name: 'Vegetables',
-    children: [
-      {
-        name: 'Green',
-        children: [
-          {name: 'Broccoli'},
-          {name: 'Brussels sprouts'},
-        ]
-      }, {
-        name: 'Orange',
-        children: [
-          {name: 'Pumpkins'},
-          {name: 'Carrots'},
-        ]
-      },
-    ]
-  },
-];
-
-/**
- * @title Tree with nested nodes
- */
 @Component({
   selector: 'app-nested-tree-ui',
   templateUrl: './nested-tree-ui.component.html',
   styleUrls: ['./nested-tree-ui.component.scss']
 })
-export class NestedTreeUiComponent {
-  treeControl = new NestedTreeControl<FoodNode>(node => node.children);
-  dataSource = new MatTreeNestedDataSource<FoodNode>();
-
-  constructor() {
-    this.dataSource.data = TREE_DATA;
+export class NestedTreeUiComponent implements OnChanges {
+  @Input() nodes: NestedTreeNode[] = [];
+  treeControl = new NestedTreeControl<NestedTreeNode>(node => node.children);
+  dataSource = new MatTreeNestedDataSource<NestedTreeNode>();
+  @Input() set data(nodes: NestedTreeNode[]) {
+    this.dataSource.data = nodes;
   }
+  hasChild = (_: number, node: NestedTreeNode) => !!node.children && node.children.length > 0;
 
-  hasChild = (_: number, node: FoodNode) => !!node.children && node.children.length > 0;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nodes) {
+      this.dataSource.data = this.nodes;
+    }
+  }
 }
