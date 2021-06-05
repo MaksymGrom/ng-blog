@@ -1,18 +1,22 @@
-.example-tree-invisible {
+.tree {
+  background-color: #eee;
+}
+
+.tree-invisible {
   display: none;
 }
 
-.example-tree ul,
-.example-tree li {
+.tree ul,
+.tree li {
   margin-top: 0;
   margin-bottom: 0;
   list-style-type: none;
 }
 
-.example-tree .mat-nested-tree-node div[role=group] {
+.tree .mat-nested-tree-node div[role=group] {
   padding-left: 20px;
 }
 
-.example-tree div[role=group] > .mat-tree-node {
+.tree div[role=group] > .mat-tree-node {
   padding-left: 20px;
 }
