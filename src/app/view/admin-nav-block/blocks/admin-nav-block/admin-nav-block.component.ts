@@ -5,30 +5,48 @@ import {delay} from 'rxjs/operators';
 
 const TREE_DATA: NestedTreeNode[] = [
   {
-    name: 'Fruit',
-    children: [
-      {name: 'Apple'},
-      {name: 'Banana'},
-      {name: 'Fruit loops'},
-    ]
-  }, {
-    name: 'Vegetables',
+    name: 'Contents',
     children: [
       {
-        name: 'Green',
-        children: [
-          {name: 'Broccoli'},
-          {name: 'Brussels sprouts'},
-        ]
-      }, {
-        name: 'Orange',
-        children: [
-          {name: 'Pumpkins'},
-          {name: 'Carrots'},
-        ]
+        name: 'Pages',
+        href: '/admin/grid/content/pages'
+      },
+      {
+        name: 'Posts',
+        href: '/admin/grid/content/posts'
+      },
+      {
+        name: 'Comments',
+        href: '/admin/grid/content/comments'
       },
     ]
-  },
+  }, {
+    name: 'Accounts',
+    icon: 'perm_identity',
+    children: [
+      {
+        name: 'Admins',
+        icon: 'manage_accounts',
+        href: '/admin/grid/account/admins'
+      }, {
+        name: 'Users',
+        icon: 'face',
+        href: '/admin/grid/account/users'
+      },
+    ]
+  }, {
+    name: 'Settings',
+    icon: 'settings',
+    children: [
+      {
+        name: 'General',
+        href: '/admin/form/settings/general'
+      }, {
+        name: 'Catalog',
+        href: '/admin/form/settings/catalog'
+      },
+    ]
+  }
 ];
 
 @Component({

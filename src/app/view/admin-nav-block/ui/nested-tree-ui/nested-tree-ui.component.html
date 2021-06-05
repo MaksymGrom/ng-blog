@@ -1,11 +1,10 @@
-<nav class="nav">
-  <a [routerLink]="'/admin/grid/content/pages'">GRID</a>
-  <a [routerLink]="'/admin/form/content/comments'">FORM</a>
-</nav>
-
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
-    {{node.name}}
+    <a [routerLink]="node.href">
+      <mat-icon *ngIf="node.icon" class="mat-icon-rtl-mirror">
+        {{node.icon}}
+      </mat-icon>
+      {{node.name}}</a>
   </mat-tree-node>
   <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
     <div class="mat-tree-node">
@@ -15,6 +14,9 @@
           {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
         </mat-icon>
       </button>
+      <mat-icon *ngIf="node.icon" class="mat-icon-rtl-mirror">
+        {{node.icon}}
+      </mat-icon>
       {{node.name}}
     </div>
     <div [class.example-tree-invisible]="!treeControl.isExpanded(node)"
