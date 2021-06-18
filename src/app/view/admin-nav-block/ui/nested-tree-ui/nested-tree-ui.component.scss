@@ -1,0 +1,22 @@
+.tree {
+  background-color: #eee;
+}
+
+.tree-invisible {
+  display: none;
+}
+
+.tree ul,
+.tree li {
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+}
+
+.tree .mat-nested-tree-node div[role=group] {
+  padding-left: 20px;
+}
+
+.tree div[role=group] > .mat-tree-node {
+  padding-left: 20px;
+}
